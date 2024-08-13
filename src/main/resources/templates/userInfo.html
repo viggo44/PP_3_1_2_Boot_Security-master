@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Information</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>User Information</h1>
+    <table class="table table-bordered">
+        <tr>
+            <th>Имя</th>
+            <td th:text="${user.username}"></td>
+        </tr>
+        <tr>
+            <th>Почта</th>
+            <td th:text="${user.email}"></td>
+        </tr>
+        <tr>
+            <th>Фамилия</th>
+            <td th:text="${user.lastName}"></td>
+        </tr>
+        <tr>
+            <th>Возраст</th>
+            <td th:text="${user.age}"></td>
+        </tr>
+        <tr>
+            <th>Роли</th>
+            <td>
+                <ul>
+                    <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+</div>
+<form th:action="@{/logout}" method="post" style="display:inline;">
+    <input type="submit" value="Logout" class="btn btn-danger"/>
+</form>
+</body>
+</html>
