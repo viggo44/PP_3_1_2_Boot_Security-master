@@ -6,6 +6,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.Service.RegistrationService;
+import ru.kata.spring.boot_security.demo.Service.RegistrationServiceImpl;
 import ru.kata.spring.boot_security.demo.Service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.Service.UserServiceImpl;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -19,13 +20,13 @@ import java.util.List;
 public class AdminController {
 
     private final UserServiceImpl userServiceImpl;
-    private final RegistrationService registrationService;
+    private final RegistrationService registrationServiceImpl;
     private final RoleServiceImpl roleServiceImpl;
 
 
-    public AdminController(UserServiceImpl userServiceImpl, RegistrationService registrationService, RoleServiceImpl roleServiceImpl) {
+    public AdminController(UserServiceImpl userServiceImpl, RegistrationServiceImpl registrationServiceImpl, RoleServiceImpl roleServiceImpl) {
         this.userServiceImpl = userServiceImpl;
-        this.registrationService = registrationService;
+        this.registrationServiceImpl = registrationServiceImpl;
         this.roleServiceImpl = roleServiceImpl;
     }
 
@@ -50,7 +51,7 @@ public class AdminController {
 
     @PostMapping("/")
     public String createUser(@ModelAttribute("user") User user) {
-        registrationService.register(user);
+        registrationServiceImpl.register(user);
         return "redirect:/admin/";
     }
 
