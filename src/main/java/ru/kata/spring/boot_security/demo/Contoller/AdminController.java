@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.Contollers;
+package ru.kata.spring.boot_security.demo.Contoller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -6,8 +6,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.Service.RegistrationService;
-import ru.kata.spring.boot_security.demo.Service.RoleService;
-import ru.kata.spring.boot_security.demo.Service.UserService;
+import ru.kata.spring.boot_security.demo.Service.RoleServiceImpl;
+import ru.kata.spring.boot_security.demo.Service.UserServiceImpl;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
@@ -18,15 +18,15 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final RegistrationService registrationService;
-    private final RoleService roleService;
+    private final RoleServiceImpl roleServiceImpl;
 
 
-    public AdminController(UserService userService, RegistrationService registrationService, RoleService roleService) {
-        this.userService = userService;
+    public AdminController(UserServiceImpl userServiceImpl, RegistrationService registrationService, RoleServiceImpl roleServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
         this.registrationService = registrationService;
-        this.roleService = roleService;
+        this.roleServiceImpl = roleServiceImpl;
     }
 
     @GetMapping("")
@@ -37,7 +37,7 @@ public class AdminController {
 
     @GetMapping(value = "/")
     public String showUser(ModelMap model) {
-        List<User> cars = userService.getAllUsers();
+        List<User> cars = userServiceImpl.getAllUsers();
         model.addAttribute("printUser", cars);
         return "userr";
     }
@@ -56,14 +56,14 @@ public class AdminController {
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
-        userService.deleteUser(id);
+        userServiceImpl.deleteUser(id);
         return "redirect:/admin/";
     }
 
     @GetMapping("/edit")
     public String editUserForm(@RequestParam("id") Long id, Model model) {
-        User user = userService.getUser(id);
-        List<Role> roles = roleService.getAllRoles();
+        User user = userServiceImpl.getUser(id);
+        List<Role> roles = roleServiceImpl.getAllRoles();
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
         return "user-form";
@@ -76,7 +76,7 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "/user-form";
         }
-        userService.updateUser(user);
+        userServiceImpl.updateUser(user);
         return "redirect:/admin/";
     }
 }

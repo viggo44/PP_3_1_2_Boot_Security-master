@@ -11,31 +11,37 @@
     <h1>Редактировать пользователя</h1>
     <form th:action="@{/admin/update}" th:object="${user}" method="post">
         <input type="hidden" th:field="*{id}">
+
         <div class="form-group">
             <label for="username">Имя</label>
-            <input type="text" class="form-control" id="firstName" th:field="*{username}">
-            <div class="text-danger mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Age Error</div>
+            <input type="text" class="form-control" id="username" th:field="*{username}">
+            <div class="text-danger mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Имя Error</div>
         </div>
+
         <div class="form-group">
-            <label for="password">Пароль</label>
-            <input type="text" class="form-control" id="password" th:field="*{password}">
-            <div class="text-danger mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Age Error</div>
+            <label for="newPassword">Новый пароль (оставьте пустым, если не хотите изменять)</label>
+            <input type="password" class="form-control" id="newPassword" th:field="*{password}">
+            <div class="text-danger mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Пароль Error</div>
         </div>
+
         <div class="form-group">
             <label for="lastName">Фамилия</label>
             <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
-            <div class="text-danger mt-1" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Age Error</div>
+            <div class="text-danger mt-1" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Фамилия Error</div>
         </div>
+
         <div class="form-group">
             <label for="age">Возраст</label>
-            <input type="age" class="form-control" id="age" th:field="*{age}">
-            <div class="text-danger mt-1" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+            <input type="number" class="form-control" id="age" th:field="*{age}">
+            <div class="text-danger mt-1" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Возраст Error</div>
         </div>
+
         <div class="form-group">
             <label for="email">Почта</label>
             <input type="email" class="form-control" id="email" th:field="*{email}">
-            <div class="text-danger mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Age Error</div>
+            <div class="text-danger mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Почта Error</div>
         </div>
+
         <div class="form-group">
             <label for="roles">Роли</label>
             <div th:each="role : ${roles}">
@@ -45,9 +51,11 @@
                 </div>
             </div>
         </div>
+
         <button type="submit" class="btn btn-primary">Сохранить изменения</button>
     </form>
-    <form th:action="@{/logout}" method="post" style="display:inline;">
+
+    <form th:action="@{/logout}" method="post" style="margin-top: 20px;">
         <input type="submit" value="Logout" class="btn btn-danger"/>
     </form>
 </div>

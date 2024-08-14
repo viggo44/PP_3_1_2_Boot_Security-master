@@ -10,12 +10,14 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "roles")
-public class Role {
+public class Role implements GrantedAuthority{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column(name = "role")
-    private String name2;
+
+    @Column(name = "role", unique = true)
+    private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> userSet;
@@ -39,5 +41,10 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, userSet);
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }
