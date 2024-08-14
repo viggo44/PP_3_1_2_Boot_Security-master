@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.Repository.UserRepository;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -42,10 +43,26 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Transactional
     public void updateUser(User user) {
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        Optional<User> optionalExistingUser = userRepository.findById(user.getId());
+
+        if (optionalExistingUser.isPresent()) {
+            User existingUser = optionalExistingUser.get();
+
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                existingUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            }
+            existingUser.setUsername(user.getUsername());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setLastName(user.getLastName());
+            existingUser.setAge(user.getAge());
+
+            if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+                existingUser.setRoles(user.getRoles());
+            }
+            userRepository.save(existingUser);
+        } else {
+            throw new EntityNotFoundException("User not found with id: " + user.getId());
         }
-        userRepository.save(user);
     }
 
 
