@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.Contollers;
+package ru.kata.spring.boot_security.demo.Contoller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
