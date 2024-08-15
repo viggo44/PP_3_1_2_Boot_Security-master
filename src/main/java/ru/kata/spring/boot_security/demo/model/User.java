@@ -70,6 +70,16 @@ public class User implements UserDetails {
                 '}';
     }
 
+    public void updateFromUser(User user){
+        this.username = user.username;
+        this.email = user.email;
+        this.lastName = user.lastName;
+        this.age = user.age;
+        this.roles = user.getRoles();
+    }
+
+
+
     public String getRolesAsString() {
         return roles.stream()
                 .map(Role::getName)
