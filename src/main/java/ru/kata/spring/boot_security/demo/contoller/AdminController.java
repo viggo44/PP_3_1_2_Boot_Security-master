@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.contoller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -13,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller()
-@RequestMapping("/admin")
+@RequestMapping
 public class AdminController {
 
     private final UserService userService;
@@ -27,35 +28,37 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("")
-    public String homePage() {
-        return "AdminPage";
-    }
+//    @GetMapping("")
+//    public String homePage() {
+//        return "AdminPage";
+//    }
 
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/admin")
     public String showUser(ModelMap model) {
-        List<User> cars = userService.getAllUsers();
-        model.addAttribute("printUser", cars);
-        return "userr";
+        model.addAttribute("printUser", userService.getAllUsers());
+        return "admin/adminPage";
     }
+
 
     @GetMapping("/new")
-    public String newUser(ModelMap model) {
-        model.addAttribute("user", new User());
-        return "neww";
+    public String newUser(@AuthenticationPrincipal User user, ModelMap model) {
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "admin/new";
     }
 
     @PostMapping("/")
     public String createUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
         registrationService.register(user);
-        return "redirect:/admin/";
+        return "redirect:/admin";
     }
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/admin/";
+        return "redirect:/admin";
     }
 
     @GetMapping("/edit")
