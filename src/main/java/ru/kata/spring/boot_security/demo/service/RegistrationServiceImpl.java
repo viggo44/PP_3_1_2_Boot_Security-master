@@ -31,7 +31,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
-        Role roleUser = roleRepository.findByName("ROLE_USER");
+        Role roleUser = roleRepository.findByName("USER");
         if (roleUser != null) {
             user.addRole(roleUser);
         } else {

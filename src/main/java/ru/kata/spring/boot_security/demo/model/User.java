@@ -25,9 +25,9 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//
-//    @NotEmpty(message = "Имя не должно быть пустым")
-//    @Size(min = 2, max = 50, message = "Имя должно быть от 2 до 50 символов длиной")
+
+    @NotEmpty(message = "Имя не должно быть пустым")
+    @Size(min = 2, max = 50, message = "Имя должно быть от 2 до 50 символов длиной")
     @Column(name = "username")
     private String username;
 
@@ -120,6 +120,8 @@ public class User implements UserDetails {
     public User getUser() {
         return this;
     }
+
+
 
 
 }

@@ -12,26 +12,13 @@ import ru.kata.spring.boot_security.demo.model.User;
 @Controller
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
-
-    public UserController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
-    }
-
-
     @GetMapping("/user")
     public String showUserInfo(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userDetail = (User) authentication.getPrincipal();
-        User user = userDetail.getUser();
-        System.out.println(user);
-        model.addAttribute("user", user);
-        return "userInfo";
+        model.addAttribute("user", userDetail.getUser());
+        return "user/userPage";
     }
 
-    @GetMapping("/logout")
-    public String logoutPage() {
-        return "redirect:/auth/login"; //
-    }
 
 }

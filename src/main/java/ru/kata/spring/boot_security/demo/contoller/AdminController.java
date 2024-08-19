@@ -12,26 +12,20 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller()
 @RequestMapping
 public class AdminController {
 
     private final UserService userService;
-    private final RegistrationService registrationService;
     private final RoleService roleService;
 
 
-    public AdminController(UserService userService, RegistrationServiceImpl registrationService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.registrationService = registrationService;
         this.roleService = roleService;
     }
-
-//    @GetMapping("")
-//    public String homePage() {
-//        return "AdminPage";
-//    }
 
 
     @GetMapping(value = "/admin")
@@ -51,10 +45,9 @@ public class AdminController {
         return "admin/new";
     }
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public String createUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        registrationService.register(user);
         return "redirect:/admin";
     }
 
@@ -64,39 +57,14 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit")
-    public String editUserForm(@RequestParam("id") Long id, Model model) {
-        User user = userService.getUser(id);
-        List<Role> roles = roleService.getAllRoles();
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roles);
-        return "user-form";
-    }
-
-
-//    @PutMapping("/{id}/update")
-//    public String updateUser(@ModelAttribute("user") User user, Model model) {
-//        model.addAttribute("roles", roleService.getAllRoles());
-//        userService.updateUser(user);
-//        return "redirect:/admin";
-//    }
-
-//    @PostMapping("/update")
-//    public String updateUser(@ModelAttribute("user") @Valid User user,
-//                             BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return "/user-form";
-//        }
-//        userService.updateUser(user);
-//        return "redirect:/admin/";
-//    }
-
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("user") @Valid User user,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/admin/";
+        }
         userService.updateUser(user);
         return "redirect:/admin/";
     }
-
-
 
 }
