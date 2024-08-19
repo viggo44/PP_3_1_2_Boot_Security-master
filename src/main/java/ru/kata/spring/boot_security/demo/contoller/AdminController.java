@@ -35,8 +35,11 @@ public class AdminController {
 
 
     @GetMapping(value = "/admin")
-    public String showUser(ModelMap model) {
+    public String showUser(@AuthenticationPrincipal User user, ModelMap model) {
         model.addAttribute("printUser", userService.getAllUsers());
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roleService.getAllRoles());
+
         return "admin/adminPage";
     }
 
@@ -71,13 +74,29 @@ public class AdminController {
     }
 
 
+//    @PutMapping("/{id}/update")
+//    public String updateUser(@ModelAttribute("user") User user, Model model) {
+//        model.addAttribute("roles", roleService.getAllRoles());
+//        userService.updateUser(user);
+//        return "redirect:/admin";
+//    }
+
+//    @PostMapping("/update")
+//    public String updateUser(@ModelAttribute("user") @Valid User user,
+//                             BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            return "/user-form";
+//        }
+//        userService.updateUser(user);
+//        return "redirect:/admin/";
+//    }
+
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") @Valid User user,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "/user-form";
-        }
+    public String updateUser(@ModelAttribute("user") User user) {
         userService.updateUser(user);
         return "redirect:/admin/";
     }
+
+
+
 }

@@ -63,13 +63,13 @@
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
-                                    <tr th:each="user : ${usprintUserers}">
+                                    <tr th:each="user : ${printUser}">
                                         <td th:text="${user.id}">id</td>
                                         <td th:text="${user.username}">name</td>
                                         <td th:text="${user.lastName}">surname</td>
                                         <td th:text="${user.age}">age</td>
                                         <td th:text="${user.email}">email</td>
-                                        <td th:text="${user.roles}">roles</td>
+                                        <td th:text="${user.getRolesAsString}">roles</td>
                                         <td>
                                             <a type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                                data-bs-target="#editModal"
@@ -90,17 +90,17 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                 aria-label="Close"></button>
                                                     </div>
-                                                    <form th:action="@{/{id}/update(id=${user.id})}"
-                                                          th:object="${user}" th:method="PUT">
+                                                    <form th:action="@{/update(id=${user.id})}"
+                                                          th:object="${user}" th:method="post">
                                                         <div class="modal-body col-md text-center">
                                                             <br>
                                                             <label for="name0"><b>Name</b></label>
-                                                            <input th:name="name" th:type="text"
+                                                            <input th:name="username" th:type="text"
                                                                    class="form-control" id="name0"
                                                                    th:value="${user.username}"/>
                                                             <br>
                                                             <label for="surname0"><b>Surname</b></label>
-                                                            <input th:name="surname" th:type="text"
+                                                            <input th:name="lastName" th:type="text"
                                                                    class="form-control" id="surname0"
                                                                    th:value="${user.lastName}"/>
                                                             <br>
@@ -121,8 +121,8 @@
                                                             <br>
                                                             <label for="roles"><b>Role</b></label>
                                                             <select multiple class="form-control form-control-sm" id="roles" name="roles" size="2" required>
-                                                                <option th:each="role: ${roles}" th:value="${role.userRole}" th:selected="${user.roles.contains(role)}">
-                                                                    <th:block th:text="${role.userRole}">
+                                                                <option th:each="role: ${roles}" th:value="${role.id}" th:selected="${user.roles.contains(role)}">
+                                                                    <th:block th:text="${role.name}">
                                                                     </th:block>
                                                                 </option>
                                                             </select>
